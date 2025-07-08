@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import bibleBooks from '../data/bibleData';
 import Select from 'react-select';
 
@@ -16,6 +17,7 @@ export default function Dashboard() {
     setReadChapters(stored);
   }, [selectedBook]);
 
+  // We keep this so you can still mark chapters read/unread here (optional)
   const toggleChapter = (id) => {
     let updated;
     if (readChapters.includes(id)) {
@@ -67,19 +69,24 @@ export default function Dashboard() {
 
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {chapters.map(({ id, chapter }) => (
-          <li
-            key={id}
-            onClick={() => toggleChapter(id)}
-            style={{
-              cursor: 'pointer',
-              padding: '8px',
-              margin: '4px 0',
-              backgroundColor: readChapters.includes(id) ? '#d4edda' : '#f8d7da',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-            }}
-          >
-            {chapter} {readChapters.includes(id) && '✅'}
+          <li key={id} style={{ marginBottom: '0.5rem' }}>
+            {/* Link to ChapterView page */}
+            <Link
+              to={`/dashboard/${selectedBook}/${id}`}
+              style={{
+                display: 'block',
+                padding: '8px',
+                backgroundColor: readChapters.includes(id) ? '#d4edda' : '#f8d7da',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                textDecoration: 'none',
+                color: 'inherit',
+              }}
+              // Optional: keep toggle chapter on click if you want
+              // onClick={() => toggleChapter(id)}
+            >
+              {chapter} {readChapters.includes(id) && '✅'}
+            </Link>
           </li>
         ))}
       </ul>
